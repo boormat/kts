@@ -1,3 +1,3 @@
 $(document).ready(function() {
-  React.render(<Routes/>, document.body);
+  ReactDOM.render(<Routes/>, document.getElementById('main'));
 });

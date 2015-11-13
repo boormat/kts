@@ -1,4 +1,4 @@
-/*global RaceCollection */
+/*global Races */
 
 Meteor.startup(function(){
   // Create a demo user
@@ -8,8 +8,8 @@ Meteor.startup(function(){
   }
   
     // Create a demo race
-  if (RaceCollection.find().count() === 0) {
-    RaceCollection.insert({'name': 'khana1', 'tests': 5, entrants:[{number:'1', name:'mat', group:''}] });
+  if (Races.find().count() === 0) {
+    Races.insert({'name': 'khana1', 'tests': 5, entrants:[{number:'1', name:'mat', group:''}] });
   }
 
 });
