@@ -4,7 +4,7 @@
 
 Stage = React.createClass({
     mixins: [ReactMeteorData],
-    
+
     getMeteorData: function () {
         const stageId = this.props.params.stageId;
         const raceId = this.props.params.raceId;
@@ -13,7 +13,7 @@ Stage = React.createClass({
             //Scores.find({stage:stageId}).fetch()
                 [{
                 _id: 'meh',
-                raceId:'xxxxraceid',
+                raceId: 'xxxxraceid',
                 stage: 1,
                 car: 1,
                 rawtime: 1.1,
@@ -23,7 +23,7 @@ Stage = React.createClass({
             }]
         };
     },
-    
+
     render: function () {
         // So this should probably be a component!
         // the stage is the edit fields, that can probably
@@ -34,8 +34,8 @@ Stage = React.createClass({
 
         var row = function (score, i) {
             // return <li key={item._id}>{item.stage}</li>;
-		    return (
-		        <tr key={i}>
+            return (
+                <tr key={i}>
             		<td><a><i className="icon-wrench edit"></i></a></td>
             		<td>{score.car}</td>
             		<td>get name</td>
@@ -43,12 +43,12 @@ Stage = React.createClass({
             		<td>{score.flags}</td>
             		<td>{score.code}</td>
         		</tr>
-    		)
+            )
         };
 
 
         return (
-            <div className="row"> 
+            <div className="row">
                 <ScoreForm />
                 <table className=".table-striped">
                     <thead>
@@ -67,7 +67,7 @@ Stage = React.createClass({
                             <td>class</td>
                             <td>cones</td>
                             <td>edit</td>
-                        </tr>  
+                        </tr>
                     </tbody>
                     {this.data.items.map(row)}
                 </table>
@@ -83,19 +83,19 @@ EntrantLabel = React.createClass({
     propTypes: {
         // This component gets the task to display through a React prop.
         // We can use propTypes to indicate it is required
-        car:  React.PropTypes.object.isRequired,
+        car: React.PropTypes.object.isRequired,
         name: React.PropTypes.object.isRequired
     },
     render() {
-        // (car, name)    
+        // (car, name)
         const car = this.props.car;
         const name = this.props.name;
         return (
             // no inverse in bootstrap
             <div key={car}>
                 <span className="label label-default">
-            		{{car}}</span> 
-            	<span className="number label label-default">
+                {{car}}</span>
+                <span className="number label label-default">
                     {{name}}</span>
             </div>
         );
@@ -104,111 +104,109 @@ EntrantLabel = React.createClass({
 
 
 ScoreForm = React.createClass({
-    // props = stage, 
+    // props = stage,
     getDefaultProps: function () {
         return {
-            raceId:'raceIdSadfsdf', 
-            stage:1,            
+            raceId: 'raceIdSadfsdf',
+            stage: 1,
         }
     },
-    
+
     getInitialState: function () {
         return {
             car: '',
-            time:'',
-            flags:0,
+            time: '',
+            flags: 0,
         };
     },
 
     // Add action should probably propagate up.  Maybe?
     // or simply do it here :-)
-    // Also add input if EDITING an existing score.  (assuming we 
+    // Also add input if EDITING an existing score.  (assuming we
     // do that this way.)
-    addScore: function(e) {
+    addScore: function (e) {
         e.preventDefault();
         // var num = React.findDOMNode(this.refs.number).value;
         // var time  = React.findDOMNode(this.refs.time).value;
         console.log('addScore time');
-        Meteor.call('addScore', this.props.raceId, //'raceIdSadfsdf', 
+        Meteor.call('addScore', this.props.raceId, //'raceIdSadfsdf',
             this.props.stage, // stage number .. props
-            this.state.car, 
+            this.state.car,
             this.state.time,
             this.state.flags);
 
-        this.setState( { car:'', time:'', flags:'' });
+        this.setState({
+            car: '',
+            time: '',
+            flags: ''
+        });
+        this.myCarInput.focus();
     },
 
-    handleChangeCar: function(event) {
-        this.setState({car: event.target.value});
+    setTime: function (val) {
+        this.setState({
+            time: val
+        });
+        this.myTimeInput.focus();
     },
-    handleChangeTime: function(event) {
-        this.setState({time: event.target.value});
+    setTimeDone: function (val) {
+        this.setState({
+            time: val
+        });
+        this.myCarInput.focus();
     },
 
-    handleWD: function(event) {
-        this.setState({time: 'WD'});
-        this.myTimeInput.focus();
-    },
-    
-    handleDNS: function(event) {
-        this.setState({time: 'DNS'});
-        this.myTimeInput.focus();
-    },
-    handleX: function(event) {
-        this.setState({time: ''});
-        this.myTimeInput.focus();
-    },
     // Add interaction callbacks here. e.g. a WD button that
     // just sets the rawscore to 'WD', etc.
-    render(){
-        return (            
+    render() {
+        return (
             <form onSubmit={this.addScore}>
             <div className="form-group">
             <input type="text"
-                className="form-control" 
+                className="form-control"
                 placeholder="Car"
                 value={this.state.car}
-                onChange={this.handleChangeCar}
-                ref="car"
+                onChange={ e => this.setState({car: e.target.value}) }
+                ref={  ref => this.myCarInput = ref }
             />
 
             <input type="text"
-                className="form-control" 
+                className="form-control"
                 placeholder="Time"
                 value={this.state.time}
-                onChange={this.handleChangeTime}
-                ref={(ref) => 
-                    this.myTimeInput = ref
-                }
+                onChange= { e => this.setTime(e.target.value) }
+                ref={  ref => this.myTimeInput = ref }
             />
 
             <input
               type="button"
               value="X"
-              className="btn btn-primary" 
-              onClick={this.handleX}
+              className="btn btn-primary"
+              onClick= { e => this.setTime('') }
             />
             <input
               type="button"
               value="WD"
-              className="btn btn-primary" 
-              onClick={this.handleWD}
+              className="btn btn-primary"
+              onClick= { e => this.setTimeDone('WD') }
             />
             <input
               type="button"
               value="DNS"
-              className="btn btn-primary" 
-              onClick={this.handleDNS}
+              className="btn btn-primary"
+              onClick={ e => this.setTimeDone('DNS')}
             />
-            
-            <input type="number" 
-                className="form-control" 
-                placeholder="flags"   
-                ref="flags"/>
+
+            <input type="number"
+                className="form-control"
+                placeholder="flags"
+                value={this.state.flags}
+                onChange={ e => this.setState({flags: e.target.value}) }
+                ref="flags"
+                />
             </div>
             <button className="btn btn-primary" type="submit">Add Item</button>
             </form>
         );
     },
 });
-
