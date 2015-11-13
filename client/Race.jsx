@@ -9,7 +9,7 @@ Race = React.createClass({
     //var disctinctValues = _.pluck(distinctArray, 'foo');
     // let tlist = Array(this.data.race.tests).fill(1);;
     return {
-      race: RaceCollection.findOne({}) || {
+      race: Races.findOne({}) || {
         /* test data */
         _id:'xxx1', 
         name: 'dummy',

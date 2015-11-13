@@ -10,7 +10,7 @@ Stage = React.createClass({
         const raceId = this.props.params.raceId;
         return {
             items:
-            //ScoresCollection.find({stage:stageId}).fetch()
+            //Scores.find({stage:stageId}).fetch()
                 [{
                 _id: 'meh',
                 raceId:'xxxxraceid',

@@ -1,7 +1,7 @@
-/*global RaceCollection ScoresCollection ItemsCollection */
+/*global Races Scores ItemsCollection */
 
 
-Items = new Mongo.Collection("Itemsdb");
+ItemsCollection = new Mongo.Collection("Itemsdb");
 
 Scores = new Mongo.Collection("Scoresdb");
 /* id_ : automatic
