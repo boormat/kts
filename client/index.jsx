@@ -11,6 +11,7 @@ Index = React.createClass({
           <EntrantLabel car='2' name='ben'/>
           <EntrantLabel car='3'/>
           <EntrantLabel name='numberless'/>
+          <StageTest />
         </div>
       </div>
     );

@@ -6,37 +6,62 @@ Stage = React.createClass({
     mixins: [ReactMeteorData],
 
     getMeteorData: function () {
-        const stageId = this.props.params.stageId;
+        const stage = this.props.params.stageId;
         const raceId = this.props.params.raceId;
-        return {
-            items:
-            //Scores.find({stage:stageId}).fetch()
-                [{
-                _id: 'meh',
-                raceId: 'xxxxraceid',
-                stage: 1,
-                car: '1',
-                name:'bill',
-                time: 1.1,
-                flags: 0,
-            }, {
-                _id: 'meh2',
-                raceId: 'xxxxraceid',
-                stage: 1,
-                car: '2',
-                name:'bob',
-                time: 1.2,
-                flags: 1,
-            }, {
-                _id: 'meh3',
-                raceId: 'xxxxraceid',
-                stage: 1,
-                car: '3',
-                time: 'WD',
-                flags: 2,
-            }, ]
-        };
+        //debugger
+        var selector = {raceId:raceId, stage:stage};
+        selector = {}
+//        var handle = Meteor.subscribe('scores', selector);
+// Autopublish right?  Where is my scores?
+        var scores = Scores.find(selector).fetch();
+        //debugger
+        return { scores:scores }
     },
+
+    render : function(){
+        //debugger
+        return (
+            <StageTable  scores={this.data.scores} />
+        )
+    }
+});
+
+StageTest = React.createClass({
+    testitems:
+        [ {
+            _id: 'meh',
+            raceId: 'xxxxraceid',
+            stage: 1,
+            car: '1',
+            name:'bill',
+            time: 1.1,
+            flags: 0,
+        }, {
+            _id: 'meh2',
+            raceId: 'xxxxraceid',
+            stage: 1,
+            car: '2',
+            name:'bob',
+            time: 1.2,
+            flags: 1,
+        }, {
+            _id: 'meh3',
+            raceId: 'xxxxraceid',
+            stage: 1,
+            car: '3',
+            time: 'WD',
+            flags: 2,
+        }, ] ,
+
+    render : function(){
+        return (
+            <StageTable scores={this.testitems} />
+        )
+    }
+});
+
+StageTable = React.createClass({
+
 
     render: function () {
         // So this should probably be a component!
@@ -44,25 +69,10 @@ Stage = React.createClass({
         // live at this level OK.
         // on submit of the form does Meteor change...
         // other components have subscription that changes
-
-
-        var row = function (score, i) {
-            // return <li key={item._id}>{item.stage}</li>;
-            return (
-                <tr key={i}>
-                    <td><a><i className="icon-wrench edit"></i></a></td>
-                    <td><EntrantLabel car={score.car} name={score.name} /></td>
-                    <td>{score.time}</td>
-                    <td>{score.flags}F</td>
-                </tr>
-            )
-        };
-
-
         return (
             <div className="row">
                 <ScoreForm />
-                Finished {this.data.items.length} of ?
+                Finished {this.props.scores.length} of ?
                 <table className=".table-striped">
                     <thead>
                         <tr>
@@ -74,7 +84,17 @@ Stage = React.createClass({
                         </tr>
                     </thead>
                     <tbody>
-                    {this.data.items.map(row)}
+                        {this.props.scores.map( (it) => {
+                            return (
+                                <StageResultRow
+                                    key={it.car}
+                                    car={it.car}
+                                    name={it.name}
+                                    time={it.time}
+                                    flags={it.flags}
+                                />);
+                            })
+                        }
                     </tbody>
                 </table>
             </div>
@@ -82,6 +102,19 @@ Stage = React.createClass({
     },
 });
 
+
+StageResultRow = React.createClass({
+    render : function(){
+        return (
+            <tr>
+                <td><a><i className="icon-wrench edit"></i></a></td>
+                <td><EntrantLabel car={this.props.car} name={this.props.name} /></td>
+                <td>{this.props.time}</td>
+                <td>{this.props.flags}F</td>
+            </tr>
+        )
+    },
+});
 
 EntrantLabel = React.createClass({
     // not sure if this should take an entrant, or just the 2 fields.
