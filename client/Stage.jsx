@@ -15,12 +15,26 @@ Stage = React.createClass({
                 _id: 'meh',
                 raceId: 'xxxxraceid',
                 stage: 1,
-                car: 1,
-                rawtime: 1.1,
+                car: '1',
+                name:'bill',
                 time: 1.1,
                 flags: 0,
-                gates: 0
-            }]
+            }, {
+                _id: 'meh2',
+                raceId: 'xxxxraceid',
+                stage: 1,
+                car: '2',
+                name:'bob',
+                time: 1.2,
+                flags: 1,
+            }, {
+                _id: 'meh3',
+                raceId: 'xxxxraceid',
+                stage: 1,
+                car: '3',
+                time: 'WD',
+                flags: 2,
+            }, ]
         };
     },
 
@@ -36,13 +50,11 @@ Stage = React.createClass({
             // return <li key={item._id}>{item.stage}</li>;
             return (
                 <tr key={i}>
-            		<td><a><i className="icon-wrench edit"></i></a></td>
-            		<td>{score.car}</td>
-            		<td>get name</td>
-            		<td><span className="number badge">{score.code}</span></td>
-            		<td>{score.flags}</td>
-            		<td>{score.code}</td>
-        		</tr>
+                    <td><a><i className="icon-wrench edit"></i></a></td>
+                    <td><EntrantLabel car={score.car} name={score.name} /></td>
+                    <td>{score.time}</td>
+                    <td>{score.flags}F</td>
+                </tr>
             )
         };
 
@@ -50,26 +62,20 @@ Stage = React.createClass({
         return (
             <div className="row">
                 <ScoreForm />
+                Finished {this.data.items.length} of ?
                 <table className=".table-striped">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>car</th>
-                            <th>class</th>
-                            <th>cones</th>
+                            <th>time</th>
+                            <th>flags</th>
                             <th>edit</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>?</td>
-                            <td>1</td>
-                            <td>class</td>
-                            <td>cones</td>
-                            <td>edit</td>
-                        </tr>
-                    </tbody>
                     {this.data.items.map(row)}
+                    </tbody>
                 </table>
             </div>
         );
@@ -83,9 +89,18 @@ EntrantLabel = React.createClass({
     propTypes: {
         // This component gets the task to display through a React prop.
         // We can use propTypes to indicate it is required
-        car: React.PropTypes.object.isRequired,
-        name: React.PropTypes.object.isRequired
+        car: React.PropTypes.string.isRequired,
+        name: React.PropTypes.string
     },
+
+    getDefaultProps() {
+        return {
+            car: '',
+            name: ''
+        }
+    },
+
+    // note whitespace is eaten by css somehow (extra spaces are size 0)
     render() {
         // (car, name)
         const car = this.props.car;
@@ -94,9 +109,8 @@ EntrantLabel = React.createClass({
             // no inverse in bootstrap
             <div key={car}>
                 <span className="label label-default">
-                {{car}}</span>
-                <span className="number label label-default">
-                    {{name}}</span>
+                    {car} {name}
+                </span>
             </div>
         );
     },
@@ -207,7 +221,7 @@ ScoreForm = React.createClass({
             </div>
             <button className="btn btn-primary"
                 type="submit"
-                disabled={this.state.time.length === 0 || this.state.car === 0 }
+                disabled={this.state.time.length === 0 || this.state.car.length === 0 }
             >Add Item</button>
             </form>
         );
