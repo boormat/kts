@@ -205,7 +205,10 @@ ScoreForm = React.createClass({
                 ref="flags"
                 />
             </div>
-            <button className="btn btn-primary" type="submit">Add Item</button>
+            <button className="btn btn-primary"
+                type="submit"
+                disabled={this.state.time.length === 0 || this.state.car === 0 }
+            >Add Item</button>
             </form>
         );
     },
