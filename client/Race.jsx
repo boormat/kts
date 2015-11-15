@@ -1,17 +1,14 @@
-const {
-  Link,
-} = ReactRouter;
+
+const { Link,} = ReactRouter; // Link is a alias
 
 Race = React.createClass({
   mixins: [ReactMeteorData],
   getMeteorData: function () {
 
-    //var disctinctValues = _.pluck(distinctArray, 'foo');
-    // let tlist = Array(this.data.race.tests).fill(1);;
     return {
       race: Races.findOne({}) || {
         /* test data */
-        _id:'xxx1', 
+        _id:'xxx1',
         name: 'dummy',
         tests: 3
       },
@@ -34,7 +31,7 @@ Race = React.createClass({
         <ul>
         {testarray.map(createTest)}
         </ul>
-        
+
         <div className="col-xs-8 col-sm-6 col-md-4">
           <form onSubmit={this.addItem}>
             <div className="form-group">
