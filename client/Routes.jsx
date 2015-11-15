@@ -16,7 +16,6 @@ Routes = React.createClass({
       <Router history={browserHistory}>
         <Route path="/" component={App}>
           <IndexRoute component={Index}/>
-          <Route path="items" component={Items}/>
           <Route path="race" component={Race}>
           </Route>
           <Route path="stage/:raceId/:stageId" component={Stage}/>

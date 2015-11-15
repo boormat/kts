@@ -1,7 +1,5 @@
-/*global Races Scores ItemsCollection */
+/*global Races Scores */
 
-
-ItemsCollection = new Mongo.Collection("Itemsdb");
 
 Scores = new Mongo.Collection("Scoresdb");
 /* id_ : automatic
@@ -29,8 +27,8 @@ function MakeEnum(names){
 	return Object.freeze(anum);
 }
 
-SSCode = MakeEnum([	
-                "WD", 
+SSCode = MakeEnum([
+                "WD",
                 "DNS",
                 "DNF"]);
 
