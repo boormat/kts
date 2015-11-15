@@ -6,6 +6,7 @@ ScoreForm = React.createClass({
         return {
             raceId: 'raceIdSadfsdf',
             stage: 1,
+            entrants: [{name:'test', car:'00'},]
         }
     },
 
@@ -54,11 +55,27 @@ ScoreForm = React.createClass({
         this.myCarInput.focus();
     },
 
+    queueCarClick: function( car) {
+    console.log('You clicked: ' , car);
+    this.setState({car:car});
+    this.myTimeInput.focus();
+  },
+
     // Add interaction callbacks here. e.g. a WD button that
     // just sets the rawscore to 'WD', etc.
     render() {
         return (
             <form onSubmit={this.addScore}>
+                { this.props.entrants.map( (it,i) => {
+                    return ( <EntrantLabel
+                            key={it.car}
+                            car={it.car}
+                            name={it.name}
+                            onClick={this.queueCarClick}
+                        />)
+                    } )
+                }
+
             <div className="form-group">
             <input type="text"
                 className="form-control"

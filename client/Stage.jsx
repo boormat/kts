@@ -129,7 +129,8 @@ EntrantLabel = React.createClass({
     getDefaultProps() {
         return {
             car: '',
-            name: ''
+            name: '',
+            onClick: ()=>{},
         }
     },
 
@@ -141,7 +142,8 @@ EntrantLabel = React.createClass({
         return (
             // no inverse in bootstrap
             <div key={car}>
-                <span className="label label-default">
+                <span className="label label-default"
+                onClick={this.props.onClick.bind(null,car)}>
                     {car} {name}
                 </span>
             </div>
