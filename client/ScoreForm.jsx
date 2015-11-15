@@ -4,9 +4,10 @@ ScoreForm = React.createClass({
     // props = stage,
     getDefaultProps: function () {
         return {
-            raceId: 'raceIdSadfsdf',
-            stage: 1,
-            entrants: [{name:'test', car:'00'},]
+            raceId: null,
+            stage: null,
+            entrants: [],
+            addScore: null
         }
     },
 
@@ -25,11 +26,8 @@ ScoreForm = React.createClass({
     // do that this way.)
     addScore: function (e) {
         e.preventDefault();
-        // var num = React.findDOMNode(this.refs.number).value;
-        // var time  = React.findDOMNode(this.refs.time).value;
-        console.log('addScore time');
-        Meteor.call('addScore', this.props.raceId, //'raceIdSadfsdf',
-            this.props.stage, // stage number .. props
+
+        this.props.addScore && this.props.addScore(
             this.state.car,
             this.state.time,
             this.state.flags);
@@ -52,11 +50,11 @@ ScoreForm = React.createClass({
         this.setState({
             time: val
         });
+        // no better place really... even it set.
         this.myCarInput.focus();
     },
 
     queueCarClick: function( car) {
-    console.log('You clicked: ' , car);
     this.setState({car:car});
     this.myTimeInput.focus();
   },
@@ -101,7 +99,7 @@ ScoreForm = React.createClass({
             />
             <input
               type="button"
-              value="Slowest time or double fastest, time whichever is the least, plus 5 penalty"
+              value="Fail"
               className="btn btn-primary"
               onClick= { e => this.setTimeDone('WD') }
             />

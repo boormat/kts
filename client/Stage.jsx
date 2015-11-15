@@ -10,18 +10,38 @@ Stage = React.createClass({
         const raceId = this.props.params.raceId;
         //debugger
         var selector = {raceId:raceId, stage:stage};
-        selector = {}
+
 //        var handle = Meteor.subscribe('scores', selector);
 // Autopublish right?  Where is my scores?
         var scores = Scores.find(selector).fetch();
+
+        var race = Races.findOne(raceId);
+        // filter entrants who have run already...
+
+        var queue = [];
+        race && race.entrants && race.entrants.forEach(function (e) {
+            if ( ! Scores.find( { raceId:raceId, stage:stage, car:e.car}).count() )
+                queue.push(e);
+        });
+
         //debugger
-        return { scores:scores }
+        return { scores:scores , entrants:queue}
+    },
+
+    addScore: function (car, time, flags) {
+        console.log('addScore time');
+        const stage = this.props.params.stageId;
+        const raceId = this.props.params.raceId;
+        Meteor.call('addScore', raceId, stage, car, time, flags);
     },
 
     render : function(){
         //debugger
         return (
-            <StageTable  scores={this.data.scores} />
+            <StageTable
+                scores={this.data.scores}
+                entrants={this.data.entrants}
+                addScore={this.addScore} />
         )
     }
 });
@@ -71,7 +91,7 @@ StageTable = React.createClass({
         // other components have subscription that changes
         return (
             <div className="row">
-                <ScoreForm />
+                <ScoreForm entrants={this.props.entrants} addScore={this.props.addScore} />
                 Finished {this.props.scores.length} of ?
                 <table className=".table-striped">
                     <thead>
@@ -119,6 +139,7 @@ StageResultRow = React.createClass({
 EntrantLabel = React.createClass({
     // not sure if this should take an entrant, or just the 2 fields.
     // a bit overkill of course.
+    // OnClick callback will pass the car as argument.
     propTypes: {
         // This component gets the task to display through a React prop.
         // We can use propTypes to indicate it is required
@@ -141,12 +162,10 @@ EntrantLabel = React.createClass({
         const name = this.props.name;
         return (
             // no inverse in bootstrap
-            <div key={car}>
-                <span className="label label-default"
-                onClick={this.props.onClick.bind(null,car)}>
-                    {car} {name}
-                </span>
-            </div>
+            <span  key={car} className="label label-default"
+            onClick={this.props.onClick.bind(null,car)}>
+                {car} {name}
+            </span>
         );
     },
 });
